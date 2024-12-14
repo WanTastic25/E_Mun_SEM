@@ -1,0 +1,29 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: "Nunito", sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+$theme-colors: (
+	"primary": #4cd3ab,
+	"secondary": #ADB0B2,
+	"success": #198754,
+	"info": #0dcaf0,
+	"warning": #ffc107,
+	"danger": #dc3545,
+	"light": #f8f9fa,
+	"dark": #212529
+);
+
+$primary: #4cd3ab;
+$secondary: #ADB0B2;
+
+// Create your own map
+$custom-colors: (
+	"dark-green" : #2F9577,
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
