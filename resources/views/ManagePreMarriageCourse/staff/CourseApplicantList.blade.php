@@ -25,41 +25,33 @@
                         <th>Tarikh Mohon</th>
                         <th>Nama Peserta</th>
                         <th>No Kad Pengenalan</th>
-                        <th>Siri</th>
+                        <th>Warganegara</th>
                         <th>Status</th>
                         <th>Operasi</th>
                         </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>20/12/2019</td>
-                      <td>Siti Binti Sharir</td>
-                      <td>000202022222</td>
-                      <td>KTN/0001/2019</td>
-                      <td>Diluluskan</td>
-
-                      <td>
-                        <a class="btn" href=""><i class="fa-solid fa-file-circle-check fa-sm " ></i></a>
-                        <a class="btn" ><i class="fa-solid fa-trash-can fa-sm"  ></i></a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>12/12/2021</td>
-                      <td>Hasniah Aulie</td>
-                      <td>011998012234</td>
-                      <td>KTN/0346/2021</td>
-                      <td>Diluluskan</td>
-
-                      <td>
-                        <a class="btn" href=""><i class="fa-solid fa-file-circle-check fa-sm " ></i></a>
-                        <a class="btn" ><i class="fa-solid fa-trash-can fa-sm"  ></i></a>
-                      </td>
-                    </tr>
-
-                      <!-- Add more table rows here -->
-                  </tbody>
+                    @foreach ($applicants as $index => $applicant)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $applicant->Applicant_DOB }}</td>
+                            <td>{{ $applicant->user->User_Name ?? 'Unknown' }}</td>
+                            <td>{{ $applicant->user->User_IC ?? 'Unknown'  }}</td>
+                            <td>{{ $applicant->Applicant_Race }}</td>
+                            <td>{{ $applicant->Applicant_Marital }}</td>
+                            <td>
+                              <form action="{{ route('staff.deleteApplicant', $applicant->Applicant_ID) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                    <button type="submit" class="btn" onclick="return confirm('Are you sure?')">
+                                        <i class="fa-solid fa-trash-can fa-sm"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                
                   </table>
               </div>
                   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

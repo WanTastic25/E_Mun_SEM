@@ -5,33 +5,34 @@ namespace App\Http\Controllers\ManagePreMarriageCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Applicant_Info;
 
 class PreMarriageCourseController extends Controller
 {
-	public function indexCourse() 
+	public function indexCourse()
 	{
 		return view('ManagePreMarriageCourse.user.TermsCondition');
 	}
 
-	public function indexOrganization() 
+	public function indexOrganization()
 	{
 		$courses = Course::all();
 		return view('ManagePreMarriageCourse.user.OrganizationList', compact('courses'));
 	}
 
 	// view specific organization info
-	public function indexViewOrganization($courseId) 
+	public function indexViewOrganization($courseId)
 	{
 		$course = Course::findOrFail($courseId);
 		return view('ManagePreMarriageCourse.user.OrganizationView', compact('course'));
 	}
 
-	public function indexCourseStatus() 
+	public function indexCourseStatus()
 	{
 		return view('ManagePreMarriageCourse.user.CourseStatus');
 	}
 
-	public function indexCourseForm() 
+	public function indexCourseForm()
 	{
 		return view('ManagePreMarriageCourse.user.CourseForm');
 	}
@@ -85,9 +86,23 @@ class PreMarriageCourseController extends Controller
 	}
 
 	public function viewApplicantList()
-	{
-		return view('ManagePreMarriageCourse.staff.CourseApplicantList');
-	}
+    {
+        // Fetch all applicants
+        $applicants = Applicant_Info::with('user')->get();
+
+        // Pass applicants data to the view
+        return view('ManagePreMarriageCourse.staff.CourseApplicantList', compact('applicants'));
+    }
+
+    public function deleteApplicant($id)
+{
+    // Find and delete the applicant using the correct primary key
+    $applicant = Applicant_Info::where('Applicant_ID', $id)->firstOrFail();
+    $applicant->delete();
+
+    return redirect()->route('staff.ApplicantList')->with('success', 'Applicant deleted successfully!');
+}
+
 
 	public function viewApplicantAttendance()
 	{

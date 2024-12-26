@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth', 'verified', 'user-role:staff']], function
 	Route::delete('/InfoList/{course_id}/delete', [PreMarriageCourseController::class, 'deleteCourse'])->name('staff.deleteCourse');
 	Route::get('/LocationList', [PreMarriageCourseController::class, 'viewLocationList'])->name('staff.LocationList');
 	Route::get('/ApplicantList', [PreMarriageCourseController::class, 'viewApplicantList'])->name('staff.ApplicantList');
+	Route::delete('/ApplicantList/{id}', [PreMarriageCourseController::class, 'deleteApplicant'])->name('staff.deleteApplicant');
 	Route::get('/ApplicantAttendance', [PreMarriageCourseController::class, 'viewApplicantAttendance'])->name('staff.ApplicantAttendance');
 
 	// Marriage Application for staff
