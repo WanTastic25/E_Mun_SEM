@@ -86,22 +86,22 @@ class PreMarriageCourseController extends Controller
 	}
 
 	public function viewApplicantList()
-    {
-        // Fetch all applicants
-        $applicants = Applicant_Info::with('user')->get();
+	{
+		// Fetch all applicants
+		$applicants = Applicant_Info::with('user')->get();
 
-        // Pass applicants data to the view
-        return view('ManagePreMarriageCourse.staff.CourseApplicantList', compact('applicants'));
-    }
+		// Pass applicants data to the view
+		return view('ManagePreMarriageCourse.staff.CourseApplicantList', compact('applicants'));
+	}
 
-    public function deleteApplicant($id)
-{
-    // Find and delete the applicant using the correct primary key
-    $applicant = Applicant_Info::where('Applicant_ID', $id)->firstOrFail();
-    $applicant->delete();
+	public function deleteApplicant($id)
+	{
+		// Find and delete the applicant using the correct primary key
+		$applicant = Applicant_Info::where('Applicant_ID', $id)->firstOrFail();
+		$applicant->delete();
 
-    return redirect()->route('staff.ApplicantList')->with('success', 'Applicant deleted successfully!');
-}
+		return redirect()->route('staff.ApplicantList')->with('success', 'Applicant deleted successfully!');
+	}
 
 
 	public function viewApplicantAttendance()
