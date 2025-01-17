@@ -1,73 +1,46 @@
 <?php
 
-namespace App\Http\Controllers\ConsultationApplication;
+namespace App\Http\Controllers\ConsultationSession;
 
 use App\Http\Controllers\Controller;
-use App\Models\Consultation_Application;
 use Illuminate\Http\Request;
 
-class ConsultationApplicationController extends Controller
+class ConsultationSessionController extends Controller
 {
-
-    public function indexConsultApplication()
+    public function indexConsultSession()
     {
-        return view('ManageConsultationApplication.user.Consultation_Application');
+        return view('ManageConsultationSession.user.ConsultationSessionApplication');
     }
 
-    public function indexConsultApplicationStatus()
+    public function indexConsultSessionReview()
     {
-        $applications = Consultation_Application::all();
-        return view('ManageConsultationApplication.user.ConsultationApplicationStatus', compact('applications'));
+        return view('ManageConsultationSession.user.ConsultationSessionReview');
     }
 
-    public function indexConsultComplaint()
+    public function indexConsultSessionStatus()
     {
-        return view('ManageConsultationApplication.user.ConsultationComplaint');
+        return view('ManageConsultationSession.user.ConsultationSessionStatus');
     }
 
-    // Staff section for Consultation Application
 
-    public function indexConsultApproval()
+    // Staff section 
+    public function indexConsultSessionReview_s()
     {
-        return view('ManageConsultationApplication.staff.ConsultationApplicationApproval');
+        return view('ManageConsultationSession.staff.ConsultationSessionReview');
     }
 
-    public function deleteApplication($id)
+    public function indexConsultSessionSchedule()
     {
-        try {
-            $application = Consultation_Application::findOrFail($id);
-            $application->delete();
-            
-            return redirect()->route('user.ConsultationApplicationStatus')
-                ->with('success', 'Application deleted successfully');
-        } catch (\Exception $e) {
-            return redirect()->route('user.ConsultationApplicationStatus')
-                ->with('error', 'Failed to delete application');
-        }
+        return view('ManageConsultationSession.staff.ConsultationSessionSchedule');
     }
 
-    public function updateApplication(Request $request, $id)
+    public function indexConsultSessionAddSchedule()
     {
-        try {
-            $application = Consultation_Application::findOrFail($id);
-            
-            $application->update([
-                'wife_name' => $request->wife_name,
-                'wife_ic' => $request->wife_ic,
-                'registration_no' => $request->registration_no,
-                'complaint_detail' => $request->complaint_detail,
-            ]);
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Application updated successfully'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update application'
-            ], 500);
-        }
+        return view('ManageConsultationSession.staff.ConsultationSessionAddSchedule');
     }
 
+    public function indexConsultSessionStatus_s()
+    {
+        return view('ManageConsultationSession.staff.ConsultationSessionStatus');
+    }
 }
