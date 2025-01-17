@@ -9,11 +9,15 @@ class Consultation_Application extends Model
 {
     use HasFactory;
 
+    protected $table = 'consultation_applications';
+
     protected $fillable = [
-        'Consultation_Status',
-        'Consultation_Date',
-        'Consultation_Time',
-        'Consultation_Venue',
-        'Complaint_Detail',
+        'wife_name',
+        'wife_ic',
+        'registration_no',
+        'application_date',
+        'status',
+        'remarks',
+        'complaint_detail'
     ];
 }
