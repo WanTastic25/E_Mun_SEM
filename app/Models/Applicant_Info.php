@@ -9,27 +9,22 @@ class Applicant_Info extends Model
 {
     use HasFactory;
 
-    protected $table = 'applicant_info'; // Table name
-
-    protected $primaryKey = 'Applicant_ID'; // Specify the primary key
-
-    public $incrementing = true; // Indicate that the primary key is auto-incrementing
-
     protected $fillable = [
-        'User_ID',
+        'Applicant_ID',
+        'Applicant_Name',
         'Applicant_DOB',
+        'Applicant_Age',
         'Applicant_Race',
         'Applicant_Citizenship',
         'Applicant_Address',
+        'Applicant_PhoneNo',
         'Applicant_EduLevel',
-        'Applicant_EmpInfo',
+        'Applicant_EmpSector',
+        'Applicant_EmpPosition',
         'Applicant_Income',
         'Applicant_Marital',
         'Applicant_Mualaf',
-    ];
+        'Applicant_CertNo',
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'User_ID'); // Define relationship with the 'users' table
-    }
+    ];
 }
