@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
+<style>
+    .table th {
+        text-align: center;
+    }
+</style>
   
 <div class="container">
     <div class="row ">
@@ -26,38 +30,40 @@
                                         <th>Status</th>
                                         <th>Operasi</th>
                                         <th>Ulasan</th>
+                                        <th>Created at</th>
                                         </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <a class="btn" ><i class="fa-solid fa-trash fa-xl"></i>
-                                            <a class="btn" ><i class="fa-solid fa-pen-to-square fa-xl"></i>
-                                            <a class="btn" ><i class="fa-solid fa-eye fa-xl"></i>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                      <td>2</td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td>
-                                        <a class="btn" ><i class="fa-solid fa-trash fa-xl"></i>
-                                        <a class="btn" ><i class="fa-solid fa-pen-to-square fa-xl"></i>
-                                        <a class="btn" ><i class="fa-solid fa-eye fa-xl"></i>
-                                      </td>
-                                      <td></td>
-                                  </tr>
-                                    <!-- Add more table rows here -->
+                                    @foreach($applications as $application)
+                                        <tr>
+                                            <td>{{ $loop->iteration}}</td>
+                                            <td>{{ $application->wife_name }}</td>
+                                            <td>{{ $application->wife_ic }}</td>
+                                            <td>{{ $application->registration_no }}</td>
+                                            <td>{{ $application->application_date }}</td>
+                                            <td>{{ $application->status }}</td>
+                                            <td>
+                                                <form action="{{ route('user.deleteApplication', $application->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn" onclick="return confirm('Are you sure you want to delete this application?')">
+                                                        <i class="fa-solid fa-trash fa-l"></i>
+                                                    </button>
+                                                </form>
+                                                <button type="button" class="btn" onclick="editApplication(
+                                                    '{{ $application->id }}',
+                                                    '{{ $application->wife_name }}',
+                                                    '{{ $application->wife_ic }}',
+                                                    '{{ $application->registration_no }}',
+                                                    '{{ $application->complaint_detail }}'
+                                                )">
+                                                    <i class="fa-solid fa-pen-to-square fa-large"></i>
+                                                </button>
+                                            </td>
+                                            <td>{{ $application->complaint_detail }}</td>
+                                            <td>{{ $application->created_at }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                                 </table>
                                 <div class="col-12">
@@ -132,4 +138,79 @@ body {
     border-color: #D2F4EA;
 }    
 </style>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="wife_name" class="form-label">Nama Isteri</label>
+                        <input type="text" class="form-control" id="wife_name" name="wife_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="wife_ic" class="form-label">No. Kad Pengenalan</label>
+                        <input type="text" class="form-control" id="wife_ic" name="wife_ic">
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_no" class="form-label">No. Daftar</label>
+                        <input type="text" class="form-control" id="registration_no" name="registration_no">
+                    </div>
+                    <div class="mb-3">
+                        <label for="complaint_detail" class="form-label">Ulasan</label>
+                        <textarea class="form-control" id="complaint_detail" name="complaint_detail"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+function editApplication(id, wife_name, wife_ic, registration_no, complaint_detail) {
+    const form = document.getElementById('editForm');
+    form.action = `/consultation/update/${id}`;
+    
+    document.getElementById('wife_name').value = wife_name;
+    document.getElementById('wife_ic').value = wife_ic;
+    document.getElementById('registration_no').value = registration_no;
+    document.getElementById('complaint_detail').value = complaint_detail;
+    
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+}
+
+document.getElementById('editForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>
 @endsection
