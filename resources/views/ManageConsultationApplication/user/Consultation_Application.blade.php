@@ -44,7 +44,7 @@
                 <div class="container">
         
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
                     <label class="form-check-label text-white" for="flexCheckChecked">
                         Jika Maklumat Diatas adalah benar dan terkini
                     </label>
@@ -52,19 +52,34 @@
                 
                 <div class="button">
                     <a class="btn btn-primary" href="{{route('user.ConsultationApplicationStatus')}}" role="button">Kembali</a>
-                    <a class="btn btn-primary" href="{{route('user.ConsultationComplaint')}}" role="button" id="btn">Seterusnya</a>
+                    <a class="btn btn-primary disabled-link" href="{{route('user.ConsultationComplaint')}}" role="button" id="btn">Seterusnya</a>
                 </div>
                 
                 <script>
-                    var checkbox = document.getElementById("flexCheckChecked");
-                    var btn = document.getElementById("btn");
-                
-                    checkbox.addEventListener("change", function() {
-                        if (checkbox.checked) {
-                            btn.removeAttribute("disabled");
-                        } else {
-                            btn.setAttribute("disabled", "disabled");
-                        }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const checkbox = document.getElementById("flexCheckChecked");
+                        const btn = document.getElementById("btn");
+                        
+                        // Initial state
+                        checkbox.checked = false;
+                        btn.classList.add('disabled-link');
+                        
+                        // Prevent click when disabled
+                        btn.addEventListener('click', function(e) {
+                            if (!checkbox.checked) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                        
+                        // Toggle disabled state
+                        checkbox.addEventListener("change", function() {
+                            if (this.checked) {
+                                btn.classList.remove('disabled-link');
+                            } else {
+                                btn.classList.add('disabled-link');
+                            }
+                        });
                     });
                 </script>
                 
@@ -108,6 +123,12 @@
   p{
     font-size: 15px;
     text-align: left;
+  }
+
+  .disabled-link {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 </style>
 
